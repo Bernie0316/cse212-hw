@@ -9,6 +9,7 @@ public class PriorityQueueTests
     // Scenario: 
     // Expected Result: 
     // Defect(s) Found: 
+    // The loop did not check the last item, and Dequeue did not remove the item from the queue.
     public void TestPriorityQueue_1()
     {
         var priorityQueue = new PriorityQueue();
@@ -26,6 +27,7 @@ public class PriorityQueueTests
     // Scenario: 
     // Expected Result: 
     // Defect(s) Found: 
+    // The code used >= instead of > causing the last person with the same priority to be selected first instead of following FIFO order.
     public void TestPriorityQueue_2()
     {
         var priorityQueue = new PriorityQueue();
