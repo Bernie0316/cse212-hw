@@ -17,6 +17,7 @@
 public class Maze
 {
     private readonly Dictionary<ValueTuple<int, int>, bool[]> _mazeMap;
+    // 兩個變數代表座標
     private int _currX = 1;
     private int _currY = 1;
 
@@ -33,6 +34,14 @@ public class Maze
     public void MoveLeft()
     {
         // FILL IN CODE
+        bool[] directions = _mazeMap[(_currX, _currY)];
+
+        if (directions[0] == false)
+        {
+            throw new InvalidOperationException("Can't go that way!");
+        }
+        
+        _currX--;
     }
 
     /// <summary>
@@ -42,6 +51,14 @@ public class Maze
     public void MoveRight()
     {
         // FILL IN CODE
+        bool[] directions = _mazeMap[(_currX, _currY)];
+
+        if (directions[1] == false)
+        {
+            throw new InvalidOperationException("Can't go that way!");
+        }
+        
+        _currX++;
     }
 
     /// <summary>
@@ -51,6 +68,14 @@ public class Maze
     public void MoveUp()
     {
         // FILL IN CODE
+        bool[] directions = _mazeMap[(_currX, _currY)];
+
+        if (directions[2] == false)
+        {
+            throw new InvalidOperationException("Can't go that way!");
+        }
+
+        _currY--;
     }
 
     /// <summary>
@@ -60,6 +85,14 @@ public class Maze
     public void MoveDown()
     {
         // FILL IN CODE
+        bool[] directions = _mazeMap[(_currX, _currY)];
+
+        if (directions[3] == false)
+        {
+            throw new InvalidOperationException("Can't go that way!");
+        }
+
+        _currY++;
     }
 
     public string GetStatus()

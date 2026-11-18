@@ -22,7 +22,26 @@ public static class SetsAndMaps
     public static string[] FindPairs(string[] words)
     {
         // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+        // 紀錄看過的單字
+        HashSet<int> seen = new HashSet<int>();
+        // 儲存找到的配對
+        List<string> pairs = new List<string>();
+        // 讀取每一個單字
+        foreach (string word in words)
+        {
+            int currentKey = ((int)word[0] << 16) | word[1];
+            int reversedKey = ((int)word[1] << 16) | word[0];
+            // 檢查反轉後的單字是否存在
+            if (word[0] != word[1] && seen.Contains(reversedKey))
+            {
+                char first = (char)(reversedKey >> 16);
+                char second = (char)(reversedKey & 0xFFFF);
+                // 加入找的配對
+                pairs.Add($"{first}{second} & {word}");
+            }
+            seen.Add(currentKey);
+        }
+        return pairs.ToArray();
     }
 
     /// <summary>
@@ -43,6 +62,15 @@ public static class SetsAndMaps
         {
             var fields = line.Split(",");
             // TODO Problem 2 - ADD YOUR CODE HERE
+            string degree = fields[3];
+            if (degrees.ContainsKey(degree))
+            {
+                degrees[degree]++;
+            }
+            else
+            {
+                degrees[degree] = 1;
+            }
         }
 
         return degrees;
@@ -67,7 +95,38 @@ public static class SetsAndMaps
     public static bool IsAnagram(string word1, string word2)
     {
         // TODO Problem 3 - ADD YOUR CODE HERE
-        return false;
+        Dictionary<char, int> letters = new Dictionary<char, int>(256);
+        
+        int remaining = 0;
+        foreach (char originalletter in word1)
+        {
+            if (originalletter == ' ')
+                continue;
+            char letter = char.ToUpperInvariant(originalletter);    
+            
+            if (letters.TryGetValue(letter, out int count))
+            {
+                letters[letter] = count + 1;
+            }
+            else
+            {
+                letters[letter] = 1;
+            }
+            remaining++;
+        }
+        foreach (char originalletter in word2)
+        {
+            if (originalletter == ' ')
+                continue;
+            char letter = char.ToUpperInvariant(originalletter);
+            if (!letters.TryGetValue(letter, out int count) || count == 0)
+            {
+                return false;
+            }
+            letters[letter] = count - 1;
+            remaining--;
+        }
+        return remaining == 0;
     }
 
     /// <summary>
@@ -101,6 +160,16 @@ public static class SetsAndMaps
         // on those classes so that the call to Deserialize above works properly.
         // 2. Add code below to create a string out each place a earthquake has happened today and its magitude.
         // 3. Return an array of these string descriptions.
-        return [];
+
+        List<string> summaries = new List<string>();
+
+        foreach (var feature in featureCollection.Features)
+        {
+            string place = feature.Properties.Place;
+            double? magnitude = feature.Properties.Mag;
+
+            summaries.Add($"{place} - Mag {magnitude}");
+        }
+        return summaries.ToArray();
     }
 }
